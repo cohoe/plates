@@ -35,6 +35,9 @@ provider:
         - dynamodb:GetRecords
         - dynamodb:GetShardIterator
         - dynamodb:ListStreams
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:DeleteItem
       Resource:
         Fn::Join:
             - ""
@@ -66,15 +69,44 @@ resources:
 
 
 functions:
-  notifypending:
-    handler: handler.notifypending
-    events:
-        - stream:
-            type: dynamodb
-            arn:
-                Fn::GetAtt:
-                    - pendingReviewsTable
-                    - StreamArn
+    notifypending:
+        handler: handler.notifypending
+        events:
+            - stream:
+                type: dynamodb
+                arn:
+                    Fn::GetAtt:
+                        - pendingReviewsTable
+                        - StreamArn
+
+    submitreview:
+        handler: reviews.submit
+        events:
+            - http:
+                path: review
+                method: post
+    
+    checkreview:
+        handler: reviews.approval
+        events:
+            - http:
+                path: fuckapproval/{review_id}
+                method: get
+                cors: true
+
+    rejectreview:
+        handler: reviews.reject
+        events:
+            - http:
+                path: reject/{review_id}
+                method: get
+
+    acceptreview:
+        handler: reviews.accept
+        events:
+            - http:
+                path: accept/{review_id}
+                method: get
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

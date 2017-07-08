@@ -9,6 +9,7 @@ client = boto3.client('sns')
 
 response = client.publish(
     TargetArn=arn,
-    Message=json.dumps({'default': json.dumps(message)}),
+#    Message=json.dumps({'default': json.dumps(message)}),
+    Message=json.dumps({'default': "The quick brown fox is a <a href=\"http://google.com\">snarky ass-munch</a>."}),
     MessageStructure='json'
 )
