@@ -22,59 +22,42 @@ provider:
   runtime: python3.6
   memorySize: 128
 
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-      	- sns:Publish
-      Resource:
-        - "Ref": "pendingReviewsTopic"
+# you can overwrite defaults here
+#  stage: dev
+#  region: us-east-1
 
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeStream
-        - dynamodb:GetRecords
-        - dynamodb:GetShardIterator
-        - dynamodb:ListStreams
-      Resource:
-        Fn::Join:
-            - ""
-            - - "arn:aws:dynamodb:*:*:table/"
-              - "Ref": "pendingReviewsTable"
+# you can add statements to the Lambda function's IAM Role here
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:ListBucket"
+#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:PutObject"
+#      Resource:
+#        Fn::Join:
+#          - ""
+#          - - "arn:aws:s3:::"
+#            - "Ref" : "ServerlessDeploymentBucket"
+#            - "/*"
 
-resources:
-    Resources:
-        pendingReviewsTable:
-            Type: AWS::DynamoDB::Table
-            Properties:
-                TableName: plates-pendingreviews
-                AttributeDefinitions:
-                  - AttributeName: id
-                    AttributeType: S
-                KeySchema:
-                  - AttributeName: id
-                    KeyType: HASH
-                ProvisionedThroughput:
-                    ReadCapacityUnits: 1
-                    WriteCapacityUnits: 1
-                StreamSpecification:
-                    StreamViewType: KEYS_ONLY
-        pendingReviewsTopic:
-            Type: AWS::SNS::Topic
-            Properties:
-                TopicName: plates-PendingReviews
-                DisplayName: PlateAdmin
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
 
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.py
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.py
+#    - exclude-me-dir/**
 
 functions:
-  notifypending:
-    handler: handler.notifypending
-    events:
-        - stream:
-            type: dynamodb
-            arn:
-                Fn::GetAtt:
-                    - pendingReviewsTable
-                    - StreamArn
+  hello:
+    handler: handler.hello
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -103,3 +86,19 @@ functions:
 #      - cognitoUserPool:
 #          pool: MyUserPool
 #          trigger: PreSignUp
+
+#    Define function environment variables here
+#    environment:
+#      variable2: value2
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
