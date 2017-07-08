@@ -1,0 +1,17 @@
+/* star control */
+span.stars, span.stars-inner {
+	display: inline-block;
+	height: 16px;
+	background-image: url(../img/star.png);
+	margin: 0;
+    margin-bottom: 5px;
+	padding: 0;
+	line-height: 0;
+}
+span.stars-inner {
+	background-position: 0 -16px;
+}
+
+.col-lg-4 h2 {
+    margin-bottom: 0px;
+}
