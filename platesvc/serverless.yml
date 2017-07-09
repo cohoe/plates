@@ -38,11 +38,11 @@ provider:
         - dynamodb:PutItem
         - dynamodb:GetItem
         - dynamodb:DeleteItem
-      Resource:
-        Fn::Join:
-            - ""
-            - - "arn:aws:dynamodb:*:*:table/"
-              - "Ref": "pendingReviewsTable"
+      Resource: "arn:aws:dynamodb:*:*:table/plates-*"
+#        Fn::Join:
+#            - ""
+#            - - "arn:aws:dynamodb:*:*:table/"
+#              - "Ref": "pendingReviewsTable"
 
 resources:
     Resources:
@@ -61,6 +61,19 @@ resources:
                     WriteCapacityUnits: 1
                 StreamSpecification:
                     StreamViewType: KEYS_ONLY
+        venuesTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: plates-venues
+                AttributeDefinitions:
+                    - AttributeName: name
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: name
+                      KeyType: HASH
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         pendingReviewsTopic:
             Type: AWS::SNS::Topic
             Properties:
@@ -107,6 +120,13 @@ functions:
             - http:
                 path: accept/{review_id}
                 method: get
+
+    createvenue:
+        handler: venues.create
+        events:
+            - http:
+                path: venue
+                method: post
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
