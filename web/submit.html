@@ -58,24 +58,485 @@ $(document).ready(function() {
       </div>
 
 		<form class="form-horizontal" id="reviewForm" method="POST">
-            <!-- Reviewer -->
-            <div class="form-group">
-                <label for="reviewerInput" class="col-sm-2 control-label" >Your Name</label>
-                <div class="col-sm-5">
-                    <input type="text" required class="form-control" id="reviewerInput" name="reviewer" placeholder="Saucy Sam">
+            <fieldset>
+            <legend>Basic Info</legend>
+                <!-- Reviewer -->
+                <div class="form-group">
+                    <label for="reviewerInput" class="col-sm-2 control-label" >Your Name</label>
+                    <div class="col-sm-5">
+                        <input type="text" required class="form-control" id="reviewerInput" name="reviewer">
+                    </div>
                 </div>
-            </div>
+                <!-- First plate -->
+                <div class="form-group">
+                    <label for="firstplate" class="col-sm-2 control-label"> Was this your first plate?</label>
+                    <div class="col-sm-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="firstplate" id="firstPlateYes" value="true"> Yes
+                        </label>
+                        <label class="radio-inline">
+                        <input type="radio" name="firstplate" id="firstPlateNo" value="false" checked> No
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
 
-            <!-- Venue -->
-            <div class="form-group">
-                <label for="venueInput" class="col-sm-2 control-label" >Where did you eat</label>
-                <div class="col-sm-5">
-                    <select class="form-control" id="venueInput" name="venue" required>
-                    <option></option>
-                    </select>
-                    <p class="help-block">Or <a href="#" data-toggle="modal" data-target="#newVenueModal">add a new restaurant...</a></p>
+            <fieldset>
+                <legend>Venue</legend>
+                <!-- Venue -->
+                <div class="form-group">
+                    <label for="venueInput" class="col-sm-2 control-label" >Where did you eat</label>
+                    <div class="col-sm-5">
+                        <select class="form-control" id="venueInput" name="venue" required>
+                        <option></option>
+                        </select>
+                        <p class="help-block">Or <a href="#" data-toggle="modal" data-target="#newVenueModal">add a new restaurant...</a></p>
+                    </div>
                 </div>
-            </div>
+               <!-- Comments -->
+               <div class="form-group">
+                    <label for="venueCommentsInput" class="col-sm-2 control-label" >Comments on the venue:</label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" rows="3" id=venueCommentsInput name=venuecomments></textarea>
+                    </div>
+                </div>
+                <!-- Sketchiness -->
+                <div class="form-group">
+                    <div class="control-group">
+    					<label for="sketchinessInput" class="col-sm-2 control-label">Sketchiness</label>
+    					<div class="controls">
+    						<span class="stars editable" style="width: 80px" data-size="5">
+    							<span class="stars-inner" style="width: 0px;"></span>
+    						</span>
+    						<span class="stars-label" hidden></span>
+    						<input type="hidden" name="sketchiness" id="sketchinessInput" value="0.0" required>
+    					    <p class="help-block">Did you feel that you were going to get shot (0), or were you in the safe part of town (5)?</p>
+    					</div>
+    				</div>
+                </div> 
+                <!-- Group Size -->
+                <div class="form-group">
+                    <label for="groupSizeInput" class="col-sm-2 control-label" >Party size</label>
+                    <div class="col-sm-5">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=1>
+                                Forever alone (1)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=2>
+                                Man-date (2)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=4>
+                                Epic bros (3-4)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=6>
+                                Full car (5-6)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=15>
+                                Moderate group (7-15)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=30>
+                                Bigger group (16-30)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=60>
+                                Massive group (31-60)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="partysize" value=100>
+                                CSH (61-100)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Service Quality -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="serviceQualityInput" class="col-sm-2 control-label">Service quality</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" required name="serviceQuality" id="serviceQualityInput" value="0.0">
+                            <p class="help-block">Was the waitstaff attentive (5) or nonexistant(0)?</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Response Time -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="responseTimeInput" class="col-sm-2 control-label">Response Time</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" required name="responseTime" id="responseTimeInput" value="0.0">
+                            <p class="help-block">Did it take a long time (5) to get your food or was it quick (0)?</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Value -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="valueInput" class="col-sm-2 control-label">Value</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" required name="value" id="valueInput" value="0.0">
+                            <p class="help-block">Was your plate overpriced (0) or dirt-cheap (5).</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+            <legend>The Plate</legend>
+                <!-- Presentation -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="presentationInput" class="col-sm-2 control-label">Presentation</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" required name="presentation" id="presentationInput" value="0.0">
+                            <p class="help-block">Styrofoam box (1) or fancy china (5)?</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Portion Size -->
+                <div class="form-group">
+                    <label for="portionInput" class="col-sm-2 control-label" >Portion size</label>
+                    <div class="col-sm-5">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="portionSize" value=1>
+                                I left hungry
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="portionSize" value=2>
+                                Kinda small
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="portionSize" value=3>
+                                About perfect (I left satisfied)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="portionSize" value=4>
+                                Belt buster (finishing it took some work)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="portionSize" value=5>
+                                Couldn't finish it
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Base One -->
+                <div class="form-group">
+                    <label for="primaryBaseInput" class="col-sm-2 control-label" >Primary Base</label>
+                    <div class="col-sm-5">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="straightfries">
+                                French Fries (straight/shoestring)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="crinklefries">
+                                French Fries (crinkle)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="homefries">
+                                Homefries
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="wafflefries">
+                                Waffle Fries
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="macsalad">
+                                Mac Salad
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="beans">
+                                Baked Beans
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="other">
+                                Other
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Primary Base Rating -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="primaryBaseRatingInput" class="col-sm-2 control-label">Rate the primary base</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" required name="primaryBaseRating" id="primaryBaseInput" value="0.0">
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments -->
+               <div class="form-group">
+                    <label for="primaryBaseCommentInput" class="col-sm-2 control-label" >Comments on the primary base:</label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" rows="3" id="primaryBaseCommentInput" name="primaryBaseComment"></textarea>
+                    </div>
+                </div>
+                <br />
+                <!-- Base Two -->
+                <div class="form-group">
+                    <label for="secondaryBaseInput" class="col-sm-2 control-label" >Secondary Base</label>
+                    <div class="col-sm-5">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="straightfries">
+                                French Fries (straight/shoestring)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="crinklefries">
+                                French Fries (crinkle)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="homefries">
+                                Homefries
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="wafflefries">
+                                Waffle Fries
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="macsalad">
+                                Mac Salad
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="beans">
+                                Baked Beans
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="other">
+                                Other
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="none">
+                                None (double-primary)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Secondary Base Rating -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="secondaryBaseRatingInput" class="col-sm-2 control-label">Rate the secondary base</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" name="secondaryBaseRating" id="secondaryBaseInput" value="0.0">
+                            <p class="help-block"> </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments -->
+               <div class="form-group">
+                    <label for="secondaryBaseCommentInput" class="col-sm-2 control-label" >Comments on the secondary base:</label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" rows="3" id="secondaryBaseCommentInput" name="secondaryBaseComment"></textarea>
+                    </div>
+                </div>
+                <br />
+                <!-- Meat -->
+                <div class="form-group">
+                    <label for="meatInput" class="col-sm-2 control-label" >Meat selection</label>
+                    <div class="col-sm-5">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="cheeseburger">
+                                Cheeseburger
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="hamburger">
+                                Hamburger
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="redhot">
+                                Red Hots
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="whitehot">
+                                White Hots
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="veggieburger">
+                                Veggie Burger
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="eggs">
+                                Eggs (scrambled, fried, etc)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="primaryBase" value="other">
+                                Other
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Meat Rating -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="meatRatingInput" class="col-sm-2 control-label">Rate the meat</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" required name="meatRating" id="meatRatingInput" value="0.0">
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments -->
+               <div class="form-group">
+                    <label for="meatCommentsInput" class="col-sm-2 control-label" >Comments on the meat:</label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" rows="3" id="meatCommentsInput" name="meatComments"></textarea>
+                    </div>
+                </div>
+                <br />
+                <!-- Sauce -->
+                <div class="form-group">
+                    <label for="sauceInput" class="col-sm-2 control-label"> Did you get hot sauce?</label>
+                    <div class="col-sm-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="sauce" id="sauceInputYes" value="true"> Yes
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="sauce" id="sauceInputNo" value="false" checked> No
+                        </label>
+                    </div>
+                </div>
+                <!-- Sauce Rating -->
+                <div class="form-group">
+                    <div class="control-group">
+                        <label for="sauceRatingInput" class="col-sm-2 control-label">Rate the hot sauce</label>
+                        <div class="controls">
+                            <span class="stars editable" style="width: 80px" data-size="5">
+                                <span class="stars-inner" style="width: 0px;"></span>
+                            </span>
+                            <span class="stars-label" hidden></span>
+                            <input type="hidden" name="sauceRating" id="sauceRatingInput" value="0.0">
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Comments -->
+               <div class="form-group">
+                    <label for="sauceCommentsInput" class="col-sm-2 control-label" >Comments on the hot sauce:</label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" rows="3" id="sauceCommentsInput" name="sauceComments"></textarea>
+                    </div>
+                </div>
+                <br />
+                <!-- Bread -->
+                <div class="form-group">
+                    <label for="breadInput" class="col-sm-2 control-label">French bread included?</label>
+                    <div class="col-sm-5">
+                        <label class="radio-inline">
+                            <input type="radio" name="bread" id="breadInputYes" value="true"> Yes
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="bread" id="breadInputNo" value="false" checked> No
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Conclusion</legend>
+                <!-- Comments -->
+               <div class="form-group">
+                    <label for="miscInput" class="col-sm-2 control-label" >Any other comments about your plate</label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" rows="3" id="miscInput" name="miscComments"></textarea>
+                    </div>
+                </div>
+            </fieldset>
 
             <!-- Submit -->
             <div class="form-group">
@@ -83,6 +544,7 @@ $(document).ready(function() {
                 <div class="col-sm-5">
                     <button id="reviewSubmit" type="submit" class="btn btn-default">Submit</button>
                 </div>
+            </div>
             </div>
 		</form>
 
