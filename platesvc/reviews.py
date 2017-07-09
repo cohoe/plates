@@ -20,7 +20,7 @@ def submit(event, context):
     for key in body_parsed.keys():
         message += "%s;" % key
 
-    message = body_parsed['fname'][0]
+    #message = body_parsed['reviewer'][0]
 
     client = boto3.client('dynamodb')
     review_id = str(uuid4())
@@ -32,11 +32,17 @@ def submit(event, context):
                         })
         response = {
             "statusCode": 200,
-            "body": "%s: OK" % review_id
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\n\t\"OK\": \"%s\"\n}" % review_id
         }
     except Exception as e:
         response = {
             "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": "ERROR: %s" % e
         }
 

@@ -38,6 +38,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:GetItem
         - dynamodb:DeleteItem
+        - dynamodb:Scan
       Resource: "arn:aws:dynamodb:*:*:table/plates-*"
 #        Fn::Join:
 #            - ""
@@ -98,6 +99,7 @@ functions:
             - http:
                 path: review
                 method: post
+                cors: true
     
     checkreview:
         handler: reviews.approval
@@ -127,6 +129,15 @@ functions:
             - http:
                 path: venue
                 method: post
+                cors: true
+
+    listvenues:
+        handler: venues.list
+        events:
+            - http:
+                path: venues
+                method: get
+                cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

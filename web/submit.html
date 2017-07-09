@@ -24,6 +24,14 @@
 <link rel="stylesheet" href="assets/css/justified-nav.css">
 <link rel="stylesheet" href="assets/css/custom.css">
 
+<!-- Custom Actions -->
+<script src="assets/js/plates.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    loadvenues();
+});
+</script>
+
 </head>
 <body>
 
@@ -35,22 +43,26 @@
         <h3 class="text-muted">Plates of Rochester</h3>
         <nav>
           <ul class="nav nav-justified">
-            <li><a href="#">Home</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="#">Locations</a></li>
             <li><a href="#">Reviews</a></li>
-            <li class="active"><a href="#">Submit</a></li>
+            <li class="active"><a href="submit.html">Submit</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
         </nav>
       </div>
 
-		<form class="form-horizontal">
+      <div class="jumbotron">
+        <h1>Submit a Review</h1>
+      </div>
+
+		<form class="form-horizontal" id="reviewForm" method="POST">
             <!-- Reviewer -->
             <div class="form-group">
                 <label for="reviewerInput" class="col-sm-2 control-label" >Your Name</label>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" id="reviewerInput" placeholder="Saucy Sam">
+                    <input type="text" required class="form-control" id="reviewerInput" name="reviewer" placeholder="Saucy Sam">
                 </div>
             </div>
 
@@ -58,11 +70,10 @@
             <div class="form-group">
                 <label for="venueInput" class="col-sm-2 control-label" >Where did you eat</label>
                 <div class="col-sm-5">
-                    <select class="form-control" id="venueInput">
-                        <option value="1">Marks Texas Hots, 487 Monroe Ave</option>
-                        <option value="2">Daddy-O, 44 Bedford St New York NY</option>
+                    <select class="form-control" id="venueInput" name="venue" required>
+                    <option></option>
                     </select>
-                    <p class="help-block">Or add a new restaurant...</p>
+                    <p class="help-block">Or <a href="#" data-toggle="modal" data-target="#newVenueModal">add a new restaurant...</a></p>
                 </div>
             </div>
 
@@ -70,11 +81,86 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-5">
                 <div class="col-sm-5">
-                    <button type="submit" class="btn btn-default">Submit</button>
+                    <button id="reviewSubmit" type="submit" class="btn btn-default">Submit</button>
                 </div>
             </div>
 		</form>
 
+    <!-- Error Modal Box -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="errorModal-label">Error</h4>
+                </div>
+                <br />
+                <div class="container-fluid">
+                    <p id="reviewError" class="bg-danger"></p>
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Venue Modal box -->
+    <div class="modal fade" id="newVenueModal" tabindex="-1" role="dialog" aria-labelledby="newVenueModal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="newVenueModal-label">New Venue</h4>
+                </div>
+                <br />
+                <div class="container-fluid">
+                    <p id="newVenueError" class="bg-danger" hidden>Error text will go here.</p>
+                </div>
+                <form method="POST" action="#" class="form-horizontal" id="newVenueForm">
+                    <div class="modal-body">
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="venueNameInput" class="col-sm-2 control-label" >Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueNameInput" name="name" placeholder="Plates!">
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="venueAddressInput" class="col-sm-2 control-label" >Address</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueAddressInput" name="streetAddress" placeholder="123 Main St">
+                            </div>
+                        </div>
+
+                        <!-- City -->
+                        <div class="form-group">
+                            <label for="venueCityInput" class="col-sm-2 control-label" >City</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueCityInput" name="city" placeholder="Rochester">
+                            </div>
+                        </div>
+
+                        <!-- State -->
+                        <div class="form-group">
+                            <label for="venueStateInput" class="col-sm-2 control-label" >State</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueStateInput" name="state" placeholder="NY">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="venueSubmit" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
       <!-- Site footer -->
       <footer class="footer">
@@ -85,7 +171,7 @@
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
   
 
 </body>

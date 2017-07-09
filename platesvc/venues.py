@@ -18,6 +18,9 @@ def create(event, context):
             message = "ERROR: Key \"%s\" not specified." % key
             response = {
                 "statusCode": 400,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*"
+                },
                 "body": message
             }
             return response
@@ -29,6 +32,9 @@ def create(event, context):
         message = "ERROR: State must be only two characters. Got \"%s\" (%i)." % (body_parsed['state'], len(body_parsed['state']))
         response = {
             "statusCode": 400,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": message
         }
         return response
@@ -51,12 +57,43 @@ def create(event, context):
 
         response = {
             "statusCode": 200,
-            "body": "SUCCESS: %s" % body_parsed['name']
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": "{\n\t\"SUCCESS\": \"%s\"\n}" % body_parsed['name']
         }
     except Exception as e:
         response = {
             "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": "ERROR: %s" % e
         }
 
+    return response
+
+def list(event, context):
+    """
+    List venues.
+    """
+    client = boto3.client('dynamodb')
+
+    response = client.scan(TableName=VENUES_TABLE_NAME)
+
+    venues = []
+    for item in response['Items']:
+        venue = {}
+        for key in item.keys():
+            # Theyre all strings so we can get away with this.
+            venue[key] = item[key]["S"]
+        venues.append(venue)
+
+    response = {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        },
+        "body": json.dumps(venues)
+    }
     return response
