@@ -2,8 +2,10 @@ import json
 import boto3
 import urllib.parse
 from uuid import uuid4
+from datetime import datetime
 
 PENDING_TABLE_NAME="plates-pendingreviews"
+PUBLISHED_TABLE_NAME="plates-publishedreviews"
 
 def submit(event, context):
     """
@@ -14,28 +16,70 @@ def submit(event, context):
     
     body = event['body']
     body_parsed = urllib.parse.parse_qs(body)
-    #message = body_parsed['fname']
-    #message = body_parsed
-    message = ""
+
+    # The parse_qs function converts all values to a list, even if there is only one.
     for key in body_parsed.keys():
-        message += "%s;" % key
+        body_parsed[key] = body_parsed[key][0]
 
-    #message = body_parsed['reviewer'][0]
+    required_keys = ["reviewer", "sketchiness", "serviceQuality", "responseTime", "value", "presentation", "primaryBaseRating", "meatRating"]
+    allowed_keys = ['reviewer', 'firstplate', 'venue', 'venuecomments', 'sketchiness', 'partysize', 'serviceQuality', 'responseTime', 'value', 'presentation', 'portionSize', 'primaryBaseRating', 'primaryBaseComment', 'secondaryBaseRating', 'secondaryBaseComment', 'primaryBase', 'meatRating', 'meatComments', 'sauce', 'sauceRating', 'sauceComments', 'bread', 'miscComments']
 
-    client = boto3.client('dynamodb')
+    bool_keys = ['firstplate', 'sauce', 'bread']
+    number_keys = ['partysize', 'sketchiness', 'serviceQuality', 'responseTime', 'value', 'presentation', 'portionSize', 'primaryBaseRating', 'secondaryBaseRating', 'meatRating', 'sauceRating']
+    # Venue Validate
+
+    # Test that all minimum required keys are present
+    for key in required_keys:
+        if key not in body_parsed.keys():
+            message = "ERROR: Key \"%s\" not specified." % key
+            response = {
+                "statusCode": 400,
+                "headers": {
+                    "access-control-allow-origin": "*"
+                },
+                "body": "{\n\tERROR: %s\n}" % message
+            }
+            return response
+
+    # Test that all keys given are actually valid.
+    for key in body_parsed.keys():
+        if key not in allowed_keys:
+            message = "ERROR: Key \"%s\" was specified but is not allowed." % key
+            response = {
+                "statusCode": 400,
+                "headers": {
+                    "access-control-allow-origin": "*"
+                },
+                "body": "{\n\tERROR: %s\n}" % message
+            }
+            return response
+
+    # Build an item based on AWS data types
+    item = {}
+    for key in body_parsed.keys():
+        if key in bool_keys:
+            item[key] = {"BOOL": bool(body_parsed[key])}
+        elif key in number_keys:
+            item[key] = {"N": body_parsed[key]}
+        else:
+            item[key] = {"S": body_parsed[key]}
+
+    # Assign it an ID and stash a date
     review_id = str(uuid4())
+    item['id'] = {"S": review_id}
+    item['date'] = {"S": str(datetime.utcnow())}
+
+    # Stick it in. What could go wrong...
+    client = boto3.client('dynamodb')
     try:
         client.put_item(TableName=PENDING_TABLE_NAME,
-                        Item={
-                            'id': {'S': review_id},
-                            'content': {'S': message}
-                        })
+                        Item=item)
         response = {
             "statusCode": 200,
             "headers": {
-                "Access-Control-Allow-Origin": "*"
+                "access-control-allow-origin": "*"
             },
-            "body": "{\n\t\"OK\": \"%s\"\n}" % review_id
+            "body": "{\n\t\"ok\": \"%s\"\n}" % review_id
         }
     except Exception as e:
         response = {
@@ -61,8 +105,15 @@ def approval(event, context):
                                          Key={
                                              'id': {'S': review_id}
                                          })
-        review = {'id': review_id, 'content': query_response['Item']['content']['S']}
-        message = json.dumps(review)
+        #review = {'id': review_id, 'content': query_response['Item']['content']['S']}
+        review = query_response['Item']
+
+        clean_review = {}
+        for key in review.keys():
+            d_type = list(review[key].keys())[0]
+            clean_review[key] = review[key][d_type]
+
+        message = json.dumps(clean_review)
         response = {
             "statusCode": 200,
             "headers": {
@@ -73,6 +124,9 @@ def approval(event, context):
     except Exception as e:
         response = {
             "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": "ERROR: %s" % e
         }
 
@@ -107,9 +161,31 @@ def accept(event, context):
     Accept a pending review.
     """
     review_id = event['pathParameters']['review_id']
+    try:
+        client = boto3.client('dynamodb')
+        query_response = client.get_item(TableName=PENDING_TABLE_NAME,
+                                         Key={
+                                             'id': {'S': review_id}
+                                         })
+        pending_review = query_response['Item']
+        pending_review['pub_date'] = {'S': str(datetime.utcnow())}
+
+        pub_response = client.put_item(TableName=PUBLISHED_TABLE_NAME,
+                                       Item=pending_review)
+
+    except Exception as e:
+        response = {
+            "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": "ERROR: %s" % e
+        }
+        return response
+
     response = {
         "statusCode": 200,
-        "body": "Not implemented yet."
+        "body": "{}"
     }
 
     return response

@@ -15,3 +15,11 @@ span.stars-inner {
 .col-lg-4 h2 {
     margin-bottom: 0px;
 }
+
+h3.thin {
+	font-weight: normal;
+}
+
+.plate-table {
+    width: auto;
+}

@@ -1,6 +1,7 @@
 console.log("Running Custom Script");
 
 api_prefix="https://tdazhl5c8k.execute-api.us-east-1.amazonaws.com/dev"
+star_keys = ['sketchiness', 'serviceQuality', 'responseTime', 'value', 'presentation', 'portionSize', 'primaryBaseRating', 'secondaryBaseRating', 'meatRating', 'sauceRating']
 
 function loadvenues() {
     console.log("loading venues");
@@ -13,6 +14,37 @@ function loadvenues() {
             }));
         });
     });
+
+}
+
+function drawstars(value) {
+    width = value * 16;
+    return "<span class=\"stars\" style=\"width: 80px\" title=\""+value+"/5\"><span class=\"stars-inner\" style=\"width: "+width+"px\"></span></span>"
+}
+
+function loadpendingreview() {
+    console.log("loading pending review");
+    review_id = window.location.search.substring(4);
+    console.log("loading review " + review_id)
+
+    endpoint = api_prefix + "/fuckapproval/" + review_id;
+    
+    $.get(endpoint, function(data) {
+        console.log(data);
+        for (key in data) {
+            $(`#${key}`).html(data[key]);
+        }
+        $.each(star_keys, function(i, key) {
+            console.log(key);
+            $(`#${key}`).html(drawstars(data[key]));
+        });
+        //$('#venue').html(data.venue);
+        //#$('#date').html(data.date);
+        //$('#reviewer').html(data.reviewer);
+    });
+
+    $('#accept').attr("href", api_prefix+"/accept/"+review_id);
+    $('#reject').attr("href", api_prefix+"/reject/"+review_id);
 }
 
 $(function() {

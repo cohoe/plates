@@ -1,0 +1,41 @@
+<html>
+<head>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+function loadreview() {
+	console.log("foobar");
+	review_id = window.location.search.substring(4);
+    console.log(review_id);
+	api_prefix = "https://tdazhl5c8k.execute-api.us-east-1.amazonaws.com/dev";
+    review_endpoint = api_prefix+"/fuckapproval/"+review_id
+
+    console.log("here");
+    $('#accept').attr("href", api_prefix+"/accept/"+review_id);
+    console.log($('#accept').attr("href"));
+    $('#reject').attr("href", api_prefix+"/reject/"+review_id);
+    console.log("done");
+
+    $.get(review_endpoint, function(data) {
+        console.log(data);
+        $('#review').html(JSON.stringify(data, null, 2));
+    });
+
+}
+$(document).ready(function() {
+    loadreview();
+});
+</script>
+</head>
+<body>
+Approval
+<div id="review"></div>
+<br>
+<br>
+<a id="accept" href="#">Accept</a>
+<a id="reject" href="#">Reject</a>
+</body>
+</html>

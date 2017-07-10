@@ -47,6 +47,23 @@ provider:
 
 resources:
     Resources:
+        publishedReviewsTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: plates-publishedreviews
+                AttributeDefinitions:
+                    - AttributeName: venue
+                      AttributeType: S
+                    - AttributeName: pub_date
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: venue
+                      KeyType: HASH
+                    - AttributeName: pub_date
+                      KeyType: RANGE
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         pendingReviewsTable:
             Type: AWS::DynamoDB::Table
             Properties:
