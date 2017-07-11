@@ -189,3 +189,119 @@ def accept(event, context):
     }
 
     return response
+
+def get(event, context):
+    """
+    Get a particular review.
+    """
+    review_id = event['pathParameters']['review_id']
+
+    try:
+        client = boto3.client('dynamodb')
+        query_response = client.query(TableName=PUBLISHED_TABLE_NAME,
+                                        IndexName="ReviewsByIdIndex",
+                                        KeyConditionExpression='id = :review_id',
+                                        ExpressionAttributeValues={
+                                            ':review_id': {'S': review_id}
+                                        })
+
+        review = query_response['Items'][0]
+
+        clean_review = {}
+        for key in review.keys():
+            d_type = list(review[key].keys())[0]
+            clean_review[key] = review[key][d_type]
+
+        message = json.dumps(clean_review)
+        #message = json.dumps(query_response)
+        response = {
+            "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": message
+        }
+
+    except Exception as e:
+        response = {
+            "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": "ERROR: %s" % e
+        }
+        return response
+
+    return response
+
+def listrevs(event, context):
+    """
+    List reviews.
+    """
+    client = boto3.client('dynamodb')
+
+    response = client.scan(TableName=PUBLISHED_TABLE_NAME)
+
+    reviews = []
+    for item in response['Items']:
+        review = {}
+        for key in item.keys():
+            d_type = list(item[key].keys())[0]
+            review[key] = item[key][d_type]
+        reviews.append(review)
+
+    response = {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        },
+        "body": json.dumps(reviews)
+    }
+    return response
+
+def listvenuerevs(event, context):
+    """
+    List reviews for a venue.
+    """
+    venue_id = event['pathParameters']['venue_id']
+
+    try:
+        client = boto3.client('dynamodb')
+        query_response = client.query(TableName=PUBLISHED_TABLE_NAME,
+                                        KeyConditionExpression='venue = :venue_id',
+                                        ExpressionAttributeValues={
+                                            ':venue_id': {'S': venue_id}
+                                        })
+
+        reviews = query_response['Items']
+
+        clean_reviews = []
+
+        for review in reviews:
+            clean_review = {}
+            for key in review.keys():
+                d_type = list(review[key].keys())[0]
+                clean_review[key] = review[key][d_type]
+            clean_reviews.append(clean_review)
+
+        message = json.dumps(clean_reviews)
+        #message = json.dumps(query_response)
+        response = {
+            "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": message
+        }
+
+    except Exception as e:
+        response = {
+            "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": "ERROR: %s" % e
+        }
+        return response
+
+    return response

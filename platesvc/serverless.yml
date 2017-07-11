@@ -39,6 +39,7 @@ provider:
         - dynamodb:GetItem
         - dynamodb:DeleteItem
         - dynamodb:Scan
+        - dynamodb:Query
       Resource: "arn:aws:dynamodb:*:*:table/plates-*"
 #        Fn::Join:
 #            - ""
@@ -56,6 +57,8 @@ resources:
                       AttributeType: S
                     - AttributeName: pub_date
                       AttributeType: S
+                    - AttributeName: id
+                      AttributeType: S
                 KeySchema:
                     - AttributeName: venue
                       KeyType: HASH
@@ -64,6 +67,16 @@ resources:
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
                     WriteCapacityUnits: 1
+                GlobalSecondaryIndexes:
+                    - IndexName: ReviewsByIdIndex
+                      KeySchema:
+                        - AttributeName: id
+                          KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
         pendingReviewsTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -125,6 +138,14 @@ functions:
                 path: fuckapproval/{review_id}
                 method: get
                 cors: true
+    
+    getreview:
+        handler: reviews.get
+        events:
+            - http:
+                path: review/{review_id}
+                method: get
+                cors: true
 
     rejectreview:
         handler: reviews.reject
@@ -153,6 +174,21 @@ functions:
         events:
             - http:
                 path: venues
+                method: get
+                cors: true
+
+    listreviews:
+        handler: reviews.listrevs
+        events:
+            - http:
+                path: reviews
+                method: get
+                cors: true
+    listvenuereviews:
+        handler: reviews.listvenuerevs
+        events:
+            - http:
+                path: venue/{venue_id}/reviews
                 method: get
                 cors: true
 
