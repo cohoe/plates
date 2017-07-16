@@ -17,6 +17,18 @@ function loadvenues() {
 
 }
 
+function loadvenuestable() {
+    console.log("loading venues table");
+    endpoint = api_prefix+"/venues"
+    $.get(endpoint, function(data) {
+        $.each(data, function(i, venue) {
+            $('#venuestable tr:last').after(
+                `<tr><td><a href='reviews.html?venue=${venue.id}'>${venue.name}</a></td><td>${venue.streetAddress}, ${venue.city} ${venue.state}</td><td></td><td></td></tr>`
+            )
+        });
+    });
+}
+
 function drawstars(value) {
     width = value * 16;
     return "<span class=\"stars\" style=\"width: 80px\" title=\""+value+"/5\"><span class=\"stars-inner\" style=\"width: "+width+"px\"></span></span>"

@@ -1,0 +1,162 @@
+<html>
+<head>
+<!-- Stock crap -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Identifying stuff -->
+<title>Reviews - Plates of Rochester</title>
+
+<!-- jQuery-->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Custom Themes -->
+<link rel="stylesheet" href="assets/css/justified-nav.css">
+<link rel="stylesheet" href="assets/css/custom.css">
+
+<!-- Custom Actions -->
+<script src="assets/js/plates.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    //loadvenuestable();
+});
+</script>
+
+</head>
+<body>
+
+    <div class="container">
+
+      <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">
+        <h3 class="text-muted">Plates of Rochester</h3>
+        <nav>
+          <ul class="nav nav-justified">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="venues.html">Locations</a></li>
+            <li class="active"><a href="reviews.html">Reviews</a></li>
+            <li><a href="submit.html">Submit</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Reviews</h1>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <div>
+            <div style="float: right;"><span class="stars" style="width: 80px" title="4.8/5"><span class="stars-inner" style="width: 77px"></span></span></div>
+                <h2><strong><a href="#">Marks Texas Hots</a></strong><small> by <strong>Chris Lockfort</strong></small></h2>
+                <blockquote>Lorem ipsum dotot fuck.</blockquote>
+                <em>January 23 2017</em> | <a href="review.html?id=#">Read full review »</a>
+            </div>
+        </div>
+      </div>
+
+
+    <!-- Error Modal Box -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="errorModal-label">Error</h4>
+                </div>
+                <br />
+                <div class="container-fluid">
+                    <p id="reviewError" class="bg-danger"></p>
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Venue Modal box -->
+    <div class="modal fade" id="newVenueModal" tabindex="-1" role="dialog" aria-labelledby="newVenueModal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="newVenueModal-label">New Venue</h4>
+                </div>
+                <br />
+                <div class="container-fluid">
+                    <p id="newVenueError" class="bg-danger" hidden>Error text will go here.</p>
+                </div>
+                <form method="POST" action="#" class="form-horizontal" id="newVenueForm">
+                    <div class="modal-body">
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="venueNameInput" class="col-sm-2 control-label" >Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueNameInput" name="name" placeholder="Plates!">
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="venueAddressInput" class="col-sm-2 control-label" >Address</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueAddressInput" name="streetAddress" placeholder="123 Main St">
+                            </div>
+                        </div>
+
+                        <!-- City -->
+                        <div class="form-group">
+                            <label for="venueCityInput" class="col-sm-2 control-label" >City</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueCityInput" name="city" placeholder="Rochester">
+                            </div>
+                        </div>
+
+                        <!-- State -->
+                        <div class="form-group">
+                            <label for="venueStateInput" class="col-sm-2 control-label" >State</label>
+                            <div class="col-sm-8">
+                                <input type="text" required class="form-control" id="venueStateInput" name="state" placeholder="NY">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="venueSubmit" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+      <!-- Site footer -->
+      <footer class="footer">
+        <p>© 2017 Grant Cohoe &amp; Dan Fuhry</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+  
+
+</body>
+</html>

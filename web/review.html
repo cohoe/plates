@@ -1,0 +1,171 @@
+<html>
+<head>
+<!-- Stock crap -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Identifying stuff -->
+<title>Approval</title>
+
+<!-- jQuery-->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Custom Themes -->
+<link rel="stylesheet" href="assets/css/justified-nav.css">
+<link rel="stylesheet" href="assets/css/custom.css">
+
+<!-- Custom Actions -->
+<script src="assets/js/plates.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+});
+</script>
+
+</head>
+<body>
+
+    <div class="container">
+
+      <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+      <div class="masthead">
+        <h3 class="text-muted">Plates of Rochester</h3>
+        <nav>
+          <ul class="nav nav-justified">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="venues.html">Locations</a></li>
+            <li class="active"><a href="reviews.html">Reviews</a></li>
+            <li><a href="submit.html">Submit</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+            <h1>Review of <span id="venue"></span>
+            <span class="stars" style="width: 80px" title="4.2/5"><span class="stars-inner" style="width: 50px"></span></span>
+            </h1>
+            <h3 class="thin">
+            Submited on <strong><span id="date"></span></strong> by <strong><span id="reviewer"></span></strong>
+            </h3>
+            <table class="table table-bordered table-striped plate-table">
+            <tr>
+                <td class="col-md-4"><strong>Overall rating:</strong></td>
+                <td id="overallRating" class="col-md-4"></td>
+            <tr>
+            </tr>
+                <td><strong>Reviewers first plate?</strong></td>
+                <td id='firstplate'></td>
+            </tr>
+            <tr>
+                <td><strong>Comments on the venue:</strong></td>
+                <td id='venuecomments'></td>
+            </tr>
+            <tr>
+                <td><strong>Sketchniess:</strong></td>
+                <td id='sketchiness'></td>
+            </tr>
+            <tr>
+                <td><strong>Party size:</strong></td>
+                <td id='partysize'></td>
+            </tr>
+            <tr>
+                <td><strong>Service quality:</strong></td>
+                <td id='serviceQuality'></td>
+            </tr>
+            <tr>
+                <td><strong>Response time:</strong></td>
+                <td id='responseTime'></td>
+            </tr>
+            <tr>
+                <td><strong>Value:</strong></td>
+                <td id='value'></td>
+            </tr>
+            <tr>
+                <td><strong>Presentation:</strong></td>
+                <td id='presentation'></td>
+            </tr>
+            <tr>
+                <td><strong>Portion size:</strong></td>
+                <td id='portionSize'></td>
+            </tr>
+            <tr>
+                <td><strong>Primary base rating:</strong></td>
+                <td id='primaryBaseRating'></td>
+            </tr>
+            <tr>
+                <td><strong>Comments on the primary base:</strong></td>
+                <td id='primaryBaseComment'></td>
+            </tr>
+            <tr>
+                <td><strong>Secondary base rating:</strong></td>
+                <td id='secondaryBaseRating'></td>
+            </tr>
+            <tr>
+                <td><strong>Comments on the secondary base:</strong></td>
+                <td id='secondaryBaseComment'></td>
+            </tr>
+            <tr>
+                <td><strong>Primary base ingredient:</strong></td>
+                <td id='primaryBase'></td>
+            </tr>
+            <tr>
+                <td><strong>Meat rating:</strong></td>
+                <td id='meatRating'></td>
+            </tr>
+            <tr>
+                <td><strong>Comments on the meat:</strong></td>
+                <td id='meatComments'></td>
+            </tr>
+            <tr>
+                <td><strong>Did you get hot sauce?</strong></td>
+                <td id='sauce'></td>
+            </tr>
+            <tr>
+                <td><strong>Sauce rating:</strong></td>
+                <td id='sauceRating'></td>
+            </tr>
+            <tr>
+                <td><strong>Comments on the sauce:</strong></td>
+                <td id='sauceComments'></td>
+            </tr>
+            <tr>
+                <td><strong>French bread included?</strong></td>
+                <td id='bread'></td>
+            </tr>
+            <tr>
+                <td><strong>Misc comments:</strong></td>
+                <td id='miscComments'></td>
+            </tr>
+            </table>
+        </div>
+        </div>
+
+      <!-- Site footer -->
+      <footer class="footer">
+        <p>© 2017 Grant Cohoe &amp; Dan Fuhry</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+  
+
+</body>
+</html>
