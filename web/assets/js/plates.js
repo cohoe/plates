@@ -3,6 +3,16 @@ console.log("Running Custom Script");
 api_prefix="https://tdazhl5c8k.execute-api.us-east-1.amazonaws.com/dev"
 star_keys = ['sketchiness', 'serviceQuality', 'responseTime', 'value', 'presentation', 'portionSize', 'primaryBaseRating', 'secondaryBaseRating', 'meatRating', 'sauceRating']
 
+function get_venue_name(field) {
+    endpoint = api_prefix + "/venue/" + field.html()
+    console.log(endpoint);
+    name = "A";
+    $.get(endpoint, function(data) {
+        field.html(data.name)
+    });
+    console.log("REsolved name " + name)
+}
+
 function loadvenues() {
     console.log("loading venues");
     endpoint = api_prefix+"/venues"
@@ -14,7 +24,25 @@ function loadvenues() {
             }));
         });
     });
+}
 
+function listreviews() {
+    endpoint = api_prefix + "/reviews"
+    $.get(endpoint, function(data) {
+        $.each(data, function(i, review) {
+            console.log(review)
+            $('#reviews_area').append("<div>");
+            $('#reviews_area').append(`<h2><strong><a class="venuename" href="#">${review.venue}</a></strong><small> by <strong>${review.reviewer}</strong></small></h2>`);
+            $('#reviews_area').append(`<blockquote>${review.venuecomments}</blockquote>`)
+            $('#reviews_area').append(`<em>${review.date}</em> | <a href="review.html?id=${review.id}">Read full review »</a>`);
+            $('#reviews_area').append("</div>");
+
+            $.each($('.venuename'), function(i, namefield) {
+                console.log($(this).html());
+                console.log(get_venue_name($(this)));
+            });
+        });
+    });
 }
 
 function loadvenuestable() {

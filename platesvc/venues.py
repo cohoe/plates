@@ -97,3 +97,45 @@ def list(event, context):
         "body": json.dumps(venues)
     }
     return response
+
+def get(event, context):
+    """
+    Get a particular venue.
+    """
+    venue_id = event['pathParameters']['venue_id']
+
+    try:
+        client = boto3.client('dynamodb')
+        query_response = client.query(TableName=VENUES_TABLE_NAME,
+                                        IndexName="VenuesByIdIndex",
+                                        KeyConditionExpression='id = :venue_id',
+                                        ExpressionAttributeValues={
+                                            ':venue_id': {'S': venue_id}
+                                        })
+        venue = query_response['Items'][0]
+
+        clean_venue = {}
+        for key in venue.keys():
+            # Theyre all strings so we can get away with this.
+            clean_venue[key] = venue[key]["S"]
+
+        message = json.dumps(clean_venue)
+        response = {
+            "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": message
+        }
+
+    except Exception as e:
+        response = {
+            "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": "ERROR: %s" % e
+        }
+
+    return response
+

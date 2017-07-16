@@ -99,12 +99,24 @@ resources:
                 AttributeDefinitions:
                     - AttributeName: name
                       AttributeType: S
+                    - AttributeName: id
+                      AttributeType: S
                 KeySchema:
                     - AttributeName: name
                       KeyType: HASH
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
                     WriteCapacityUnits: 1
+                GlobalSecondaryIndexes:
+                    - IndexName: VenuesByIdIndex
+                      KeySchema:
+                        - AttributeName: id
+                          KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
         pendingReviewsTopic:
             Type: AWS::SNS::Topic
             Properties:
@@ -167,6 +179,14 @@ functions:
             - http:
                 path: venue
                 method: post
+                cors: true
+
+    getvenue:
+        handler: venues.get
+        events:
+            - http:
+                path: venue/{venue_id}
+                method: get
                 cors: true
 
     listvenues:
